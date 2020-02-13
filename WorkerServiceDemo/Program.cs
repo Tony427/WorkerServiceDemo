@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System;
+using WorkerService.Service;
 
 namespace WorkerServiceDemo
 {
@@ -43,6 +44,11 @@ namespace WorkerServiceDemo
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    // get config
+                    services.Configure<AppSettings>(hostContext.Configuration.GetSection("AppSettings"));
+                    // set up with DI
+                    services.AddScoped<IServiceA, ServiceA>();
+                    services.AddScoped<IServiceB, ServiceB>();
                 })
                 .UseSerilog();
     }
